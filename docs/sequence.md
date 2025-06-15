@@ -89,15 +89,9 @@ sequenceDiagram
     loop 상품 목록
         주문 서비스->>Redis: 상품 락 획득 (lock:product:{product_id})
         alt 실패
-            주문 서비스->>Redis: 사용자 락, 상품 락 해제
+            주문 서비스->>Redis: 사용자, 상품 락 해제
             주문 서비스-->>사용자: 실패 (상품 락 경합 중)
         end
-    end
-
-    주문 서비스->>Redis: 쿠폰 락 획득 (lock:coupon:{coupon_id})
-    alt 실패
-        주문 서비스->>Redis: 사용자, 상품 락 해제
-        주문 서비스-->>사용자: 실패 (쿠폰 락 경합 중)
     end
 
     주문 서비스->>쿠폰 서비스: 쿠폰 유효성 확인
@@ -107,6 +101,7 @@ sequenceDiagram
     주문 서비스->>상품 서비스: 재고 선점 요청
     상품 서비스->>Redis: 재고 차감
     alt 재고 부족
+        상품 서비스-->> 주문 서비스: 재고 부족 응답
         주문 서비스->>Redis: 모든 락 해제
         주문 서비스-->>사용자: 실패 (재고 부족)
     end
@@ -121,7 +116,7 @@ sequenceDiagram
 
     주문 서비스->>MySQL: 주문, 주문 항목, 결제 정보 저장
     주문 서비스->>쿠폰 서비스: 쿠폰 사용 처리
-    주문 서비스->>MySQL: 커밋
+    주문 서비스->>MySQL: 트랜잭션 커밋
 
     주문 서비스->>Redis: 상품 목록 캐시 무효화
     주문 서비스->>외부 플랫폼: 주문 정보 전송
@@ -129,7 +124,6 @@ sequenceDiagram
 
     주문 서비스->>Redis: 모든 락 해제
     주문 서비스-->>사용자: 주문 + 결제 성공
-
 ```
 
 ---
@@ -143,7 +137,7 @@ sequenceDiagram
     participant Redis
     participant MySQL
     
-    사용자->>쿠폰 서비스: 쿠폰 발급 요청 (coupon_id))
+    사용자->>쿠폰 서비스: 쿠폰 발급 요청 (coupon_id)
     
     쿠폰 서비스->>Redis: 쿠폰 락 획득 (lock:coupon:{coupon_id})
     alt 실패
@@ -177,7 +171,7 @@ sequenceDiagram
     participant 쿠폰 서비스
     participant MySQL
     
-    사용자->. 쿠폰 서비스: 보유 쿠폰 조회 요청
+    사용자->>쿠폰 서비스: 보유 쿠폰 조회 요청
     
     쿠폰 서비스->>MySQL: 사용자 쿠폰 목록 조회
     쿠폰 서비스-->>사용자: 쿠폰 목록 반환
@@ -194,7 +188,7 @@ sequenceDiagram
     participant Redis
     participant MySQL
     
-    사용자->> 상품 서비스: 인기 상품 조회 요청
+    사용자->>상품 서비스: 인기 상품 조회 요청
     
     상품 서비스->>Redis: 캐시 조회 (products:popular)
     alt 캐시 있음
