@@ -24,14 +24,14 @@ public class ProductCache {
         try {
             String json = redisTemplate.opsForValue().get(KEY);
             if (json == null) {
-                log.info("ProductCache MISS: no cache for key '{}'", KEY);
+                log.info("[INFO] ProductCache MISS: no cache for key '{}'", KEY);
                 return null;
             }
             List<Product> result = objectMapper.readValue(json, new TypeReference<>() {});
-            log.info("ProductCache HIT: {} products returned from cache", result.size());
+            log.info("[INFO] ProductCache HIT: {} products returned from cache", result.size());
             return result;
         } catch (Exception e) {
-            log.warn("ProductCache Error while getting cache: {}", e.getMessage());
+            log.warn("[ERROR] ProductCache Error while getting cache: {}", e.getMessage());
             return null;
         }
     }
@@ -40,9 +40,9 @@ public class ProductCache {
         try {
             String json = objectMapper.writeValueAsString(products);
             redisTemplate.opsForValue().set(KEY, json);
-            log.info("ProductCache SAVED: {} products cached under key '{}'", products.size(), KEY);
+            log.info("[INFO] ProductCache SAVED: {} products cached under key '{}'", products.size(), KEY);
         } catch (Exception e) {
-            log.warn("ProductCache Error while saving cachee: {}", e.getMessage());
+            log.warn("[WARNING] ProductCache Error while saving cachee: {}", e.getMessage());
         }
     }
 }
