@@ -1,4 +1,4 @@
-package domain.product.entity;
+package kr.hhplus.be.server.domain.product.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

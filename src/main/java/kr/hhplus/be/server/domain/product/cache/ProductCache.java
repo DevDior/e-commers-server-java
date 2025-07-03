@@ -1,8 +1,8 @@
-package domain.product.cache;
+package kr.hhplus.be.server.domain.product.cache;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import domain.product.entity.Product;
+import kr.hhplus.be.server.domain.product.entity.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;

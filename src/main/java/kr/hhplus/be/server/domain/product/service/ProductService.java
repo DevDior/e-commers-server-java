@@ -1,8 +1,8 @@
-package domain.product.service;
+package kr.hhplus.be.server.domain.product.service;
 
-import domain.product.cache.ProductCache;
-import domain.product.entity.Product;
-import domain.product.repository.ProductRepository;
+import kr.hhplus.be.server.domain.product.cache.ProductCache;
+import kr.hhplus.be.server.domain.product.entity.Product;
+import kr.hhplus.be.server.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
