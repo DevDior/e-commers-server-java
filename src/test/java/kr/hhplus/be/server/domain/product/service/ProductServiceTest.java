@@ -37,7 +37,7 @@ public class ProductServiceTest {
         when(productCache.getAllProducts()).thenReturn(mockProductList);
 
         // when
-        List<Product> result = productService.getProducts();
+        List<Product> result = productService.getAllProducts();
 
         // then
         verify(productCache, times(1)).getAllProducts();
@@ -53,7 +53,7 @@ public class ProductServiceTest {
         when(productRepository.findAll()).thenReturn(mockProductList);
 
         // when
-        List<Product> result = productService.getProducts();
+        List<Product> result = productService.getAllProducts();
 
         // then
         verify(productRepository, times(1)).findAll();
