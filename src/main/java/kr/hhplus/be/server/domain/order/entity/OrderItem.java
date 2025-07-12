@@ -1,10 +1,11 @@
 package kr.hhplus.be.server.domain.order.entity;
 
 import jakarta.persistence.*;
+import kr.hhplus.be.server.domain.product.entity.Product;
 import lombok.*;
 
 @Entity
-@Table(name = "order_item")
+@Table(name = "order_items")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
